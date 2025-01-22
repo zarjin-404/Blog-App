@@ -7,7 +7,12 @@ import connectDB from './config/connect.db.js';
 
 const app = express();
 connectDB();
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Your frontend URL
+    credentials: true, // Allow credentials
+  })
+);
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
