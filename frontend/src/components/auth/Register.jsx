@@ -7,27 +7,28 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const navigate = useNavigate();
-
   const handelSubmit = async e => {
     e.preventDefault();
-
+    const navigate = useNavigate();
     try {
-      await axios.post(
+      const response = await axios.post(
         'http://localhost:5000/api/user/register',
         {
           name,
           email,
           password,
         },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+        }
       );
+
+      localStorage.setItem('token', response.data.token);
 
       setName('');
       setEmail('');
       setPassword('');
-      alert('User registered successfully');
-      navigate('/');
+      navigate('/profile');
     } catch (error) {
       console.log(error);
     }

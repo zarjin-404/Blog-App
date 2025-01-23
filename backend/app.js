@@ -11,13 +11,12 @@ const app = express();
 connectDB();
 app.use(
   cors({
-    origin: 'http://localhost:5173',
     credentials: true,
   })
 );
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 import userRoutes from './routes/user.routes.js';
 import blogRoutes from './routes/blog.routes.js';

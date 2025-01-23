@@ -5,36 +5,34 @@ import axios from 'axios';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handelSubmit = async e => {
+  const handleSubmit = async e => {
     e.preventDefault();
+    setErrorMessage('');
 
     try {
-      await axios.post(
+      const response = await axios.post(
         'http://localhost:5000/api/user/login',
         {
-          email,
-          password,
-        },
-        { withCredentials: true }
+          withCredentials: true,
+        }
       );
-
-      setName('');
+      localStorage.setItem('token', response.data.token);
       setEmail('');
       setPassword('');
-      alert('User logged in successfully');
-      navigate('/');
+      navigate('/profile');
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setErrorMessage('Invalid email or password. Please try again.');
     }
   };
 
   return (
     <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <h1 className="text-3xl font-bold mb-4">Login</h1>
-      <form action="/login" method="post" onSubmit={handelSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
             htmlFor="email"
@@ -45,8 +43,9 @@ export default function Login() {
           <input
             type="email"
             name="email"
-            placeholder="Email"
+            value={email}
             onChange={e => setEmail(e.target.value)}
+            placeholder="Email"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
@@ -60,11 +59,13 @@ export default function Login() {
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            value={password}
             onChange={e => setPassword(e.target.value)}
+            placeholder="Password"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
+        {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
         <div className="flex items-center justify-between">
           <button
             type="submit"

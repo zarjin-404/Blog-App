@@ -66,4 +66,9 @@ const userLogout = (req, res) => {
   res.status(200).json({ message: 'User logged out successfully' });
 };
 
-export { userRegister, userLogin, userLogout };
+const getUserProfile = async (req, res) => {
+  const user = await userModels.findOne({ email: req.user.email });
+  res.send({ user });
+};
+
+export { userRegister, userLogin, userLogout, getUserProfile };
