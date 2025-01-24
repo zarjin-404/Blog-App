@@ -20,7 +20,10 @@ const userRegister = async (req, res) => {
 
     const token = jwt.sign(
       { email: user.email, id: user._id },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1h',
+      }
     );
 
     res.cookie('token', token);
@@ -49,7 +52,10 @@ const userLogin = async (req, res) => {
 
     const token = jwt.sign(
       { email: user.email, id: user._id },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1h',
+      }
     );
 
     res.cookie('token', token);

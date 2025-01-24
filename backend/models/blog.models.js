@@ -18,6 +18,7 @@ const blogSchema = mongoose.Schema(
     image: {
       type: Buffer,
       required: true,
+      get: data => (data ? data.toString('base64') : null),
     },
   },
   { timestamps: true }
